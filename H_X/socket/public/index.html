@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Socket.IO Chat Example</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <label>Progress:</label>
+    <span id="progress"></span>%
+    <br />
+    <button id="start">开始传输</button>
+    <button id="end">终止传输</button>
+
+  <script src="jquery.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script type="text/javascript">
+    $(function() {
+      var socket = io();
+      $("#start").click(function() {
+        socket.emit('start upload');
+      });
+
+      $("#end").click(function() {
+        socket.emit('stop upload');
+      });
+
+      socket.on('progress update', function(data) {
+        $("#progress").text(data.progress);
+        if(data.progress >= 100) {
+          socket.emit('stop upload');
+          alert("上传成功了");
+        }
+      });
+    })
+  </script>
+</body>
+</html>
